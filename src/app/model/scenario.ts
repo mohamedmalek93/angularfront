@@ -11,6 +11,12 @@ export class Scenario {
     steps:Step[];
     errortype:String;
     visible:String="hidden";
+    pendresult:String;
+     Pending:Boolean=false;
+    errordays:number;
+  penddays:number;
+  date_sc:Date;
+
     setetat(){
       if(this.result==="EROOR")
       this.etat=false;

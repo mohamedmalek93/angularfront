@@ -8,6 +8,11 @@ import { ScenarioComponent } from './scenario/scenario.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ServicesService } from './services.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {  MatDatepickerModule, MatNativeDateModule } from '@angular/material';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material';
+import { DatePipe } from '@angular/common';
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,9 +23,15 @@ import { ServicesService } from './services.service';
   imports: [
     BrowserModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    BrowserAnimationsModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatInputModule  
   ],
-  providers: [ServicesService],
+  providers: [ServicesService,MatDatepickerModule,DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
