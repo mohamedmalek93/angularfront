@@ -5,18 +5,18 @@
 
 
 
-<div class="card">
+<div [ngStyle]="{'display':filterprod}" class="card" >
   
 
 <div class=" container-fluid container-scroll ">
-  <div class="title"> <h3>Daily analyse       </h3></div><br>
-  <div  class="malek row">
+  <div class="title"  style="font-size:200%;"> <h3>Daily analysis      </h3></div><br>
+  <div  >
    
   <div  *ngFor="let p of products;let element=index; " class=" col-lg-4 col-md-5 col-sm-5">
     
     <div   class="card   cursor"  >
         <div  class="cardfolder container ">
-        <div class="foldericon"> <i class="fas fa-folder fa-4x" (click)="chooseproduct(element)"></i></div>
+        <div class="foldericon"> <i class="fas fa-folder fa-4x" (click)="chooseproduct(element)" ></i></div>
   </div>
             <div class="container contf"> <h5 class="title">{{p.nom}}</h5></div>
 
@@ -27,8 +27,90 @@
   </div>
   
   </div>
+  <div >
+    
+    <div [ngStyle]="{'display':filter}" class="col-md-6">
+      <div style="text-align:center;">
+        <a style="font-size:300%;" data-toggle="modal" data-target="#myModal" >{{selectedproduct}} </a> <br>
+        <div class="modal fade" id="myModal" role="dialog">
+          <div class="modal-dialog">
+          
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">product details</h4>
+              </div>
+              <div class="modal-body">
+                <p>{{getnumberFFailurebyprod()}} </p>
+               
+       
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+        
+      </div>
+        <a [attr.href] ="'http://localhost:8085/scenarios/compress/'+getId()" style="font-size:200%;"  target="_blank" *ngIf=" getcompress()!= true" > compress product's folder?</a>
+        <p *ngIf=" getcompress()!= false">the product's folder has been compressed</p>
+        <table style=" text-align: center;" class="table table-striped">
+      
+      <tbody>
+          <tr *ngFor="let sc of stories"  >
+            <li style="background-color:powderblue;" class="list-group-item">
+            
+              <a mat-button style="color:black;" (click)="testNgClick(sc.id)">{{sc.nom}}</a>
+       </li>
+      </tr>
+    </tbody>
+  </table>
+  <button class="btn" (click)="backtoproducts()"><i class="fa fa-home"></i>Home Page </button>
+          </div>
+   </div>
+   <div [ngStyle]="{'display':filtersc}" class="col-md-6">
+    <button class="btn" (click)="backtoStories()"><i class="fa fa-home"></i>Stories Page </button>
+    <div style="text-align:center;">
+    <a style="font-size:300%;" data-toggle="modal" data-target="#myModal" >{{selectedstory}} </a> <br>
+    <div class="modal fade" id="myModal" role="dialog">
+      <div class="modal-dialog">
+      
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Story details</h4>
+          </div>
+          <div class="modal-body">
+            <p>somethng</p>
+   
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    
+    <table style=" text-align: center;" class="table table-striped">
+    
+    <tbody>
+        <tr *ngFor="let sc of distinctscenarios" >
+          <li style="background-color:powderblue;" class="list-group-item">
+          <a mat-button style="color:black;"  (click)='rendonantsc(sc.id)'>{{sc.description}}</a>
+     </li>
+    </tr>
+  </tbody>
+</table> 
 
-<div [ngStyle]="{'display':filter}" class="card m-3 " >
+</div>        
+</div>
+ 
+<div [ngStyle]="{'display':filterdistinct}"  class="card m-3 " >
   <h5 class="card-header">Choose your filter options</h5>
   <div class="card-body">
     <div class="container">
@@ -66,7 +148,7 @@
                 </mat-form-field>
                 
   </div>
-  Date Chosen using 'ngModel':
+ 
   <div>{{ date }}</div>
   <div class="row">
          
@@ -85,7 +167,11 @@
 </div>
 </div>
 <div class="col-md-6">
-    <table class="table table-striped">
+  <div style="text-align:center;">
+<a style="font-size:300%;"  (click)="scenarioDetails()">{{ Selectedsc()}} </a> <br>
+
+  </div>  
+  <table class="table table-striped">
     
     <tbody>
         <tr *ngFor="let sc of scenarios;let indexOfelement=index;">
@@ -93,15 +179,19 @@
           <div 
           [ngStyle]="{'color': getColor(indexOfelement)}">
           
-          {{sc.description}}
+         
           <button  [ngStyle]="{'color':'black'}" type="button" (click)="show(indexOfelement)">{{getbut(indexOfelement)}}</button> 
           <br>   
+          <a [attr.href] ="'http://localhost:8085/scenarios/report/'+getreport(indexOfelement)" target="_blank" style="font-size:150%;"> serenity report</a>
+            <br>   
           resultat de scenario {{sc.result}} ______________ {{sc.errortype}}  <br>
           temps d'execution:  {{sc.duration}}secondes <br>
          {{geterrordays(indexOfelement)}}
          Date scénario : {{sc.date_sc}}
+          <div *ngIf="sc.errodays != null">
+            this scenario was in failure state for {{sc.errordays}} days
+          </div>
           
-         
 
         
        
@@ -113,11 +203,13 @@
             
            
             {{step.description}}    {{step.result}}   {{step.duration}} <br>
-            {{geterror(indexOfelement,i)}}
-            {{geterrordes(indexOfelement,i)}}
+        <strong>    
+        {{geterror(indexOfelement,i)}}</strong>
+        <strong style="color:red">     {{geterrordes(indexOfelement,i)}}</strong>
             
             <div  class="input-group" *ngIf="step.incident != null"> 
-              <div  *ngFor="let screen of getscreens(indexOfelement,i);let k=index;">
+              <div  *ngFor="let screen of getscreens(indexOfelement,i);">
+                
                 <div>
                 <img [attr.src]="'http://localhost:8085/scenarios/get-image/'+screen" WIDTH=200
                 HEIGHT=200>
@@ -153,7 +245,7 @@
       
         </li>
             </tr>
+           
     </tbody>
       </table>
-    </div>
-    
+      

@@ -1,11 +1,14 @@
 import { Scenario } from './scenario';
+import { US } from './US';
 
 export class Product{
     id:number;
     nom:String;
     htmlreport:String;
-    Scearios: Scenario[];
-    selected:Boolean=false; ;
+    stories: US[];
+    selected:Boolean=false; 
+    compressed:Boolean; 
+
 switchState(){
     if(this.selected===false)
     this.selected=true;
