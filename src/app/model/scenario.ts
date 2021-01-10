@@ -2,7 +2,7 @@ import { Step } from './Step';
 
 export class Scenario {
 
-    
+    id:number;
     description:String;
     result:String;
     etat:boolean ;
@@ -16,8 +16,10 @@ export class Scenario {
     errordays:number;
   penddays:number;
   date_sc:Date;
+   htmlreport:String;
 
     setetat(){
+    
       if(this.result==="EROOR")
       this.etat=false;
       else this.etat=true;

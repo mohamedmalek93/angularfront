@@ -2,8 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { FirstComponent } from './first/first.component';
-import { AppareilComponent } from './appareil/appareil.component';
+
 import { ScenarioComponent } from './scenario/scenario.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -13,12 +12,17 @@ import {  MatDatepickerModule, MatNativeDateModule } from '@angular/material';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material';
 import { DatePipe } from '@angular/common';
+import { DialogContentExampleDialogComponent } from './dialog-content-example-dialog/dialog-content-example-dialog.component';
+import { ChartsModule, ThemeService } from 'ng2-charts';
 @NgModule({
   declarations: [
     AppComponent,
-    FirstComponent,
-    AppareilComponent,
-    ScenarioComponent
+  
+    ScenarioComponent,
+  
+    DialogContentExampleDialogComponent,
+  
+    
   ],
   imports: [
     BrowserModule,
@@ -29,9 +33,14 @@ import { DatePipe } from '@angular/common';
     MatFormFieldModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatInputModule  
+    MatInputModule  ,
+    ChartsModule
   ],
-  providers: [ServicesService,MatDatepickerModule,DatePipe],
+  entryComponents: [
+    DialogContentExampleDialogComponent,
+  ],
+  
+  providers: [ServicesService,MatDatepickerModule,DatePipe,ThemeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

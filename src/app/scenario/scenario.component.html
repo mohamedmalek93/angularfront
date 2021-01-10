@@ -4,156 +4,308 @@
 </head>
 
 
+<!-- Projects table -->
+<div [ngStyle]="{backgroundImage:'url(/../assets/adp.jpg)', 'background-repeat': 'no-repeat'}" class="imgADP">
+</div>
 
-<div class="card">
-  
 
-<div class=" container-fluid container-scroll ">
-  <div class="title"> <h3>Daily analyse       </h3></div><br>
-  <div  class="malek row">
-   
-  <div  *ngFor="let p of products;let element=index; " class=" col-lg-4 col-md-5 col-sm-5">
-    
-    <div   class="card   cursor"  >
-        <div  class="cardfolder container ">
-        <div class="foldericon"> <i class="fas fa-folder fa-4x" (click)="chooseproduct(element)"></i></div>
-  </div>
-            <div class="container contf"> <h5 class="title">{{p.nom}}</h5></div>
+<div id="content" [ngStyle]="{'display':filterprod} " class="card">
 
-          
+
+  <div class=" container-fluid container-scroll ">
+    <div class="title" style="text-align:center;">
+      <h2> {{ todayDate()}} </h2>
+    </div><br>
+
+    <div>
+
+      <div *ngFor="let p of products;let element=index; " class=" col-lg-4 col-md-5 col-sm-5">
+
+        <div class="card   cursor">
+          <div class="cardfolder container ">
+            <div class="foldericon"> <i class="fas fa-folder fa-4x" (click)="chooseproduct(element)"></i></div>
           </div>
+          <div class="container contf">
+            <h5 class="title">{{p.nom}}</h5>
+          </div>
+
+
+        </div>
+      </div>
     </div>
   </div>
-  </div>
-  
-  </div>
 
-<div [ngStyle]="{'display':filter}" class="card m-3 " >
+</div>
+<div [ngStyle]="{'display':filterprod} " style="display: block;">
+  <canvas baseChart height="250" [datasets]="barChartDataProd" [labels]="barChartLabelsProc" 
+    [options]="barChartOptionsInt" [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType">
+
+  </canvas>
+</div>
+<footer [ngStyle]="{'display':filterprod} " id="footer"> Welocme to Serenity Analyser</footer>
+
+
+
+
+<div [ngStyle]="{'display':filter}">
+  <div style="text-align:center;">
+    <a style="font-size:300%;" data-toggle="modal" data-target="#myModal">{{selectedproduct}} </a> <br>
+    <div class="modal fade" id="myModal" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">product stats</h4>
+          </div>
+          <div class="modal-body">
+            <div style="display: block;">
+              <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType"
+                [options]="pieChartOptions" [plugins]="pieChartPlugins" [legend]="pieChartLegend">
+              </canvas>
+            </div>
+
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+  <a [attr.href]="'http://localhost:8085/scenarios/compress/'+getId()" style="font-size:200%;" target="_blank"
+    *ngIf=" getcompress()!= true"> compress product's folder?</a>
+  <p *ngIf=" getcompress()!= false">the product's folder has been compressed</p>
+
+  <table style=" text-align: center;" class="table table-striped">
+
+    <tbody>
+      <tr *ngFor="let sc of stories">
+        <li style="background-color:powderblue;" class="list-group-item">
+
+          <a mat-button style="color:black;" (click)="testNgClick(sc.id)">{{sc.nom}}</a>
+        </li>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+<footer [ngStyle]="{'display':filter} " id="footer" (click)="backtoproducts()"> Back to products
+
+</footer>
+<div [ngStyle]="{'display':filtersc}">
+  <div style="text-align:center;">
+    <a style="font-size:300%;" data-toggle="modal" data-target="#myModal1">{{selectedstory}} </a> <br>
+    <div class="modal fade" id="myModal1" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">{{selectedstory}}</h4>
+          </div>
+          <div class="modal-body">
+            <div style="display: block;">
+              <canvas baseChart [data]="pieChartDataStory" [labels]="pieChartLabelsStory" [chartType]="pieChartType"
+                [options]="pieChartOptions" [plugins]="pieChartPlugins" [legend]="pieChartLegend">
+              </canvas>
+            </div>
+
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+
+
+    <table style=" text-align: center;" class="table table-striped">
+
+      <tbody>
+        <tr *ngFor="let sc of distinctscenarios">
+          <li style="background-color:powderblue;" class="list-group-item">
+            <a mat-button style="color:black;" (click)='rendonantsc(sc.id)'>{{sc.description}}</a>
+          </li>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+<footer [ngStyle]="{'display':filtersc} " id="footer" (click)="backtoStories()"> Back to Stories
+
+</footer>
+<div [ngStyle]="{'display':filterdistinct}">
   <h5 class="card-header">Choose your filter options</h5>
   <div class="card-body">
     <div class="container">
 
       <div class="row">
-         
-              <div class="col-md-3">
-                  <div class="form-group ">
-                      <label>SortBy</label>
-                     
-  <select [(ngModel)]="actionselected" (ngModelChange)='onActionSelected($event)'>
-    
-    <option *ngFor="let act of actions" [value]="act">{{act}}</option> 
-  </select>
-  </div>
-  </div>
-  <div class="col-md-3">
-    <div class="form-group ">
-        <label>Qualifications</label>
-  <select [(ngModel)]="qualiffilter" (ngModelChange)='QualifSelected($event)' >
-   
-    <option *ngFor="let act of aqualif" [value]="act">{{act}}</option> 
-  </select>
-</div>
-</div>
-<div class="row">
-         
-              <div class="col-md-3">
-                <mat-form-field>
-                  <mat-label>Choose a date</mat-label>
-                  <input matInput [matDatepicker]="picker"  [(ngModel)]="date"
-                          (dateChange)="addEvent( $event)">
-                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                  <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
-                
-  </div>
-  Date Chosen using 'ngModel':
-  <div>{{ date }}</div>
-  <div class="row">
-         
-              <div class="col-md-3">
-                  <div class="form-group ">
-                      <label>Status</label>
-                     
-  <select [(ngModel)]="stateselected" (ngModelChange)='onStateSelected($event)'>
-    
-    <option *ngFor="let act of states" [value]="act">{{act}}</option>
-  </select>
-  </div>
-  </div>
- </div>
- </div>
-</div>
-</div>
-<div class="col-md-6">
-    <table class="table table-striped">
-    
-    <tbody>
-        <tr *ngFor="let sc of scenarios;let indexOfelement=index;">
-          <li class="list-group-item">
-          <div 
-          [ngStyle]="{'color': getColor(indexOfelement)}">
-          
-          {{sc.description}}
-          <button  [ngStyle]="{'color':'black'}" type="button" (click)="show(indexOfelement)">{{getbut(indexOfelement)}}</button> 
-          <br>   
-          resultat de scenario {{sc.result}} ______________ {{sc.errortype}}  <br>
-          temps d'execution:  {{sc.duration}}secondes <br>
-         {{geterrordays(indexOfelement)}}
-         Date scénario : {{sc.date_sc}}
-          
-         
 
-        
-       
-          
-         <div  *ngFor="let step of getsteps(indexOfelement);let i=index;">
-          
-          <li  [ngStyle]="{'display':getvis(indexOfelement),'color':'black'}" class="list-group-item">
-            
-            
-           
-            {{step.description}}    {{step.result}}   {{step.duration}} <br>
-            {{geterror(indexOfelement,i)}}
-            {{geterrordes(indexOfelement,i)}}
-            
-            <div  class="input-group" *ngIf="step.incident != null"> 
-              <div  *ngFor="let screen of getscreens(indexOfelement,i);let k=index;">
-                <div>
-                <img [attr.src]="'http://localhost:8085/scenarios/get-image/'+screen" WIDTH=200
-                HEIGHT=200>
-              </div>
-              </div>
-              <div>
-              <textarea    class="form-control custom-control" rows="3" style="resize:none" required [(ngModel)]="step.incident.comment"></textarea>     
-              
-              
-              <span class="input-group-addon btn btn-primary" (click)="updateComment(indexOfelement,i)">save</span>
-            </div>
-              <div >
-                <label>Set Qualification</label>
-              <select  [(ngModel)]="qualifselected" (ngModelChange)='onQualSelected($event,indexOfelement,i)'>
-                <option *ngFor="let act of aqualif" [value]="act">{{act}}</option> 
-          </select>
-              </div>
-          <br>
-          <button  >PENDING ON</button> 
-            </div>
-          
-            </li>
-            
+        <div class="col-md-3">
+          <div class="form-group ">
+            <label>SortBy</label>
+
+            <select [(ngModel)]="actionselected" (ngModelChange)='onActionSelected($event)'>
+
+              <option *ngFor="let act of actions" [value]="act">{{act}}</option>
+            </select>
           </div>
-          
-      </div>
-      <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        </div>
+        <div class="col-md-3">
+          <div class="form-group ">
+            <label>Qualifications</label>
+            <select [(ngModel)]="qualiffilter" (ngModelChange)='QualifSelected($event)'>
 
-      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-      
-      <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
-      
-      
-        </li>
-            </tr>
-    </tbody>
-      </table>
+              <option *ngFor="let act of aqualif" [value]="act">{{act}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+
+          <div class="col-md-3">
+            <mat-form-field>
+              <mat-label>Choose a date</mat-label>
+              <input matInput [matDatepicker]="picker" [(ngModel)]="date" (dateChange)="addEvent( $event)">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+          </div>
+          <div class="row">
+
+            <div class="col-md-3">
+              <div class="form-group ">
+                <label>Status</label>
+
+                <select [(ngModel)]="stateselected" (ngModelChange)='onStateSelected($event)'>
+
+                  <option *ngFor="let act of states" [value]="act">{{act}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div style="text-align:center;">
+        <a style="font-size:300%;" data-toggle="modal" data-target="#myModal2"
+          (click)="averageexutiontime()">{{selectedsc}} </a> <br>
+        <div class="modal fade" id="myModal2" role="dialog">
+          <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">{{selectedstory}}</h4>
+              </div>
+              <div class="modal-body">
+                <h5>Average execution time :{{averagetime}}secondes</h5>
+                <div style="display: block;">
+                  <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+                    [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType">
+                  </canvas>
+                </div>
+
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <table class="table table-striped">
+
+          <tbody>
+            <tr *ngFor="let sc of scenarios;let indexOfelement=index;">
+              <li class="list-group-item">
+                <div [ngStyle]="{'color': getColor(indexOfelement)}">
+
+
+                  <button style="position:absolute;top:0; right:0;" [ngStyle]="{'color':'black'}" type="button"
+                    (click)="show(indexOfelement)">{{getbut(indexOfelement)}}</button>
+                  <br>
+                  <a [attr.href]="'http://localhost:8085/scenarios/report/'+getreport(indexOfelement)" target="_blank"
+                    style="font-size:150%;"> serenity report</a>
+                  <br>
+                  resultat de scenario {{sc.result}} ______________ {{sc.errortype}} <br>
+                  temps d'execution: {{sc.duration}}secondes <br>
+                  {{geterrordays(indexOfelement)}}
+                  Date scénario : {{sc.date_sc}}
+                  <div *ngIf="sc.errodays != null">
+                    this scenario was in failure state for {{sc.errordays}} days
+                  </div>
+
+
+
+
+
+                  <div *ngFor="let step of getsteps(indexOfelement);let i=index;">
+
+              <li [ngStyle]="{'display':getvis(indexOfelement),'color':'black'}" class="list-group-item">
+
+
+
+                {{step.description}} {{step.result}} {{step.duration}} <br>
+                <strong>
+                  {{geterror(indexOfelement,i)}}</strong>
+                <strong style="color:red"> {{geterrordes(indexOfelement,i)}}</strong>
+
+                <div class="input-group" *ngIf="step.incident != null">
+                  <div *ngFor="let screen of getscreens(indexOfelement,i);">
+
+                    <div>
+                      <img [attr.src]="'http://localhost:8085/scenarios/get-image/'+screen" WIDTH=200 HEIGHT=200>
+                    </div>
+                  </div>
+                  <div>
+                    <textarea class="form-control custom-control" rows="3" style="resize:none" required
+                      [(ngModel)]="step.incident.comment"></textarea>
+
+
+                    <span class="input-group-addon btn btn-primary"
+                      (click)="updateComment(indexOfelement,i)">save</span>
+                  </div>
+                  <div>
+                    <label>Set Qualification</label>
+                    <select [(ngModel)]="qualifselected" (ngModelChange)='onQualSelected($event,indexOfelement,i)'>
+                      <option *ngFor="let act of aqualif" [value]="act">{{act}}</option>
+                    </select>
+                  </div>
+                  <br>
+                  <button style="text-align: right;" (click)="Resolved(indexOfelement)">Set as resolved ?</button>
+                </div>
+
+              </li>
+              
+      </div>
+
     </div>
     
+
+
+    </li>
+    </tr>
+
+    </tbody>
+    </table>
+    <footer [ngStyle]="{'display':filterdistinct} " id="footer" (click)="backtoScenarios()"> Back to Scenarios
+ </footer>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
